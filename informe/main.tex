@@ -225,22 +225,27 @@ Teniendo en cuenta la figura \ref{fig:pendulo_implementado}, y de acuerdo con la
     \label{eq:sumatoria_torque}
 \end{equation}
 Se plantean las ecuaciones \eqref{eq:sumatoria_torque_motor} y \eqref{eq:sumatoria_torque_base}. Que representan la sumatoria del torque del motor y del brazo respectivamente.
-\begin{equation}
-    \tau_m= I_{R} \cdot \dot{w}_{Inercial}
-    \label{eq:sumatoria_torque_motor}
-\end{equation}
+
 \begin{equation}
    \tau_b= I_{t}\ddot{\theta}= k \sin(\theta)-b_b \dot{\theta}-\tau_m
     \label{eq:sumatoria_torque_base}
 \end{equation}
-Donde $w_{Incercial}$ se define como
+\begin{equation}
+    \tau_m= I_{R} \cdot \dot{w}_{Inercial}
+    \label{eq:sumatoria_torque_motor}
+\end{equation}
+Donde $w_{Incercial}$ se define en la ecuación \eqref{eq:w_inercial_ecuacion} y $I_R$  en la ecuación \eqref{eq:inercial_rueda_ecuacion}, donde r es el radio de la rueda de reacción
 \begin{equation}
     w_{Incercial}=\dot{\theta}+w_r
     \label{eq:w_inercial_ecuacion}
 \end{equation}
+\begin{equation}
+    I_R= \frac{M_R r^2}{2}
+    \label{eq:inercial_rueda_ecuacion}
+\end{equation}
 Donde $b_b$ es el coeficiente de fricción que posee la rueda y k es la magnitud del torque generado por la gravedad, se define con la ecuación \eqref{eq:momento_incercial_gravedad} e $I_t$ el momento inercial total del sistema definido en la ecuación \eqref{eq:momento_incercial_total}
 \begin{equation}
-    k= (l_b\cdot M_b+M_m\cdot l_m+M_Rl_R)\cdot g
+    k= (l_b^2\cdot M_b+M_m\cdot l_m^2+M_Rl_R^2)\cdot g
     \label{eq:momento_incercial_gravedad}
 \end{equation}
 \begin{equation}
@@ -325,7 +330,7 @@ De las ecuaciones obtenidas en la sección de modelamiento y de la linealizació
     \item $\theta$. Energía cinética del sistema, posición angular del sistema.
     \item $\dot{\theta}$. Energía potencial debido a la acción gravitacional. Velocidad angular del sistema.
 \end{enumerate}
-Se puede tener en cuenta la $i(t)$  del motor debido al elemento inductivo que almacena energia, pero como el factor $RL\approx0$ debido a la influencia del embobinado del motor con $L\approx0$ y los valores de resistencia de armadura cerca de los miliohmios se puede despreciar esta acción  y  además de las especificaciones del proyecto. Teniendo en cuenta lo anterior, se simplifica la ecuación \eqref{eq:modelo_electrico_motor} y  se obtiene la siguiente ecuación 
+Se puede tener en cuenta la $i(t)$  del motor debido a que es un elemento inductivo que almacena energia, pero como el factor $RL\approx0$ debido a que el embobinado es $L\approx0$ y los valores de resistencia de armadura  están cerca de los miliohmios, se puede despreciar esa variable de estado  y  así se ajusta a las solicitadas por la docente. Teniendo en cuenta lo anterior, se simplifica la ecuación \eqref{eq:modelo_electrico_motor} y  se obtiene la siguiente ecuación 
 \begin{equation}
     v(t)= \text{R}_a\cdot i(t)+ k_e \cdot w_r
     \label{eq:modelo_electrico_motor_simplificada}
@@ -403,7 +408,7 @@ Reemplazamos las ecuaciones \eqref{eq:torque_en_terminos_estados} y \eqref{eq:w_
 \end{split}
 \label{eq:x'3_ecuacion}
 \end{equation}
-Teniendo cada uno  de las variables de estados, se arma la matriz de estado de acuerdo a la ecuación \eqref{eq:matriz_estado}
+Teniendo en cuenta cada una  de las variables de estados, se arma la matriz de estado de acuerdo a la ecuación \eqref{eq:matriz_estado}
 \begin{equation}
     \begin{matrix}
        \dot{\underline{x}}(t)= A \underline{x}(t) + B u(t) \\
