@@ -234,7 +234,7 @@ Se plantean las ecuaciones \eqref{eq:sumatoria_torque_motor} y \eqref{eq:sumator
     \tau_m= I_{R} \cdot \dot{w}_{Inercial}
     \label{eq:sumatoria_torque_motor}
 \end{equation}
-Donde $w_{Incercial}$ se define en la ecuación \eqref{eq:w_inercial_ecuacion} y $I_R$  en la ecuación \eqref{eq:inercial_rueda_ecuacion}, donde r es el radio de la rueda de reacción
+Donde $w_{Incercial}$ se define en la ecuación \eqref{eq:w_inercial_ecuacion} e $I_R$  en la ecuación \eqref{eq:inercial_rueda_ecuacion}, donde r es el radio de la rueda de reacción
 \begin{equation}
     w_{Incercial}=\dot{\theta}+w_r
     \label{eq:w_inercial_ecuacion}
@@ -329,20 +329,17 @@ De las ecuaciones obtenidas en la sección de modelamiento y de la linealizació
     \item $w_r$. Energía cinética de la rueda de reacción, velocidad angular de la rueda de reacción
     \item $\theta$. Energía cinética del sistema, posición angular del sistema.
     \item $\dot{\theta}$. Energía potencial debido a la acción gravitacional. Velocidad angular del sistema.
+    \item  $I$. Energía en forma de campo magnético que almacena la bobina. Corriente del motor. 
 \end{enumerate}
-Se puede tener en cuenta la $i(t)$  del motor debido a que es un elemento inductivo que almacena energia, pero como el factor $RL\approx0$ debido a que el embobinado es $L\approx0$ y los valores de resistencia de armadura  están cerca de los miliohmios, se puede despreciar esa variable de estado  y  así se ajusta a las solicitadas por la docente. Teniendo en cuenta lo anterior, se simplifica la ecuación \eqref{eq:modelo_electrico_motor} y  se obtiene la siguiente ecuación 
-\begin{equation}
-    v(t)= \text{R}_a\cdot i(t)+ k_e \cdot w_r
-    \label{eq:modelo_electrico_motor_simplificada}
-\end{equation}
-Teniendo lo anterior se obtuvo las siguientes variables de estado
+
+Teniendo lo anterior, se obtuvo las siguientes variables de estado
 \begin{equation}
 \underline{x}=
 \begin{bmatrix}
-\theta& \dot{\theta} &w_r
+\theta& \dot{\theta} &w_r & I
 \end{bmatrix}^T
 \end{equation}
-Donde la entrada es 
+Donde la entrada es: 
 \begin{equation}
     u(t)= v(t)
 \end{equation}
@@ -352,63 +349,62 @@ Se puede obtener la relación de la ecuación \eqref{eq:x1'_ecuacion}, debido a 
     \dot{x}_1 =  x_2
     \label{eq:x1'_ecuacion}
 \end{equation}
-\subsubsection{Obtención de $\dot{x_2}$}
-De la ecuación \eqref{eq:sumatoria_torque_base_lineal}, reescribimos con variables de estado y despejamos $\dot{x_2}$ dando como resultado la ecuación \eqref{eq:x2'_en_terminos_torque_m}
+\subsubsection{Obtención de $\dot{x}_2$}
+De la ecuación \eqref{eq:sumatoria_torque_base_lineal}, se reescribe con variables de estado y despeja $\dot{x}_2$ dando como resultado la ecuación \eqref{eq:x2'_en_terminos_torque_m}
 \begin{equation}
-    \dot{x_2}=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2-\frac{\tau_m}{I_t}
+    \dot{x}_2=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2-\frac{\tau_m}{I_t}
     \label{eq:x2'_en_terminos_torque_m}
 \end{equation}
-Despejamos $i(t)$ de la ecuación \eqref{eq:modelo_electrico_motor_simplificada} y reemplazamos en \eqref{eq:torque_electrico} dando como resultado \eqref{eq:torque_en_terminos_estados}, esta última se reemplaza en  \eqref{eq:torque_motor_electrico} y por ultimo se reemplaza en
-\eqref{eq:x2'_en_terminos_torque_m}
-
+Se reemplaza la ecuación  \eqref{eq:torque_electrico} en  \eqref{eq:torque_motor_electrico} y luego esta en la ecuación \eqref{eq:x2'_en_terminos_torque_m}. Todo lo anterior con variable de estados.
  \begin{equation*}
-     i(t)=\frac{1}{\text{R}_a}u(t)-\frac{k_e}{\text{R}_a}x_3
+      \tau_e= k_i x_4
  \end{equation*}
 
- \begin{equation*}
-     \tau_e=k_i\cdot(\frac{1}{\text{R}_a}u(t)-\frac{k_e}{\text{R}_a}x_3)
- \end{equation*}
+ \begin{equation}
+      \tau_m=  k_ix_4-b_m x_3 
+      \label{eq:torque_motor_variable_estado}
+ \end{equation}
 
- \begin{equation*}
- \tau_m=k_i\cdot(\frac{1}{\text{R}_a}u(t)-\frac{k_e}{\text{R}_a}x_3)-b_m x_3 
-\end{equation*}
-\begin{equation}
- \tau_m=(-b_m-\frac{k_e k_i}{\text{R}_a}) x_3 +\frac{k_i}{\text{R}_a}u(t)
- \label{eq:torque_en_terminos_estados}
-\end{equation}
 \begin{equation*}
-    \dot{x_2}=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2-\frac{(-b_m-\frac{k_e k_i}{\text{R}_a}) x_3 +\frac{k_i}{\text{R}_a}u(t)}{I_t}
+    \dot{x}_2=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2-\frac{k_ix_4-b_m x_3}{I_t}
 \end{equation*}
 
 \begin{equation}
-    \dot{x_2}=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2+\frac{b_mR_a+k_e k_i }{I_t R_a} x_3-\frac{k_i}{\text{R}_a I_t}u(t)
+    \dot{x}_2=\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2+\frac{b_m }{I_t} x_3-\frac{k_i}{I_t}x_4
     \label{eq:x2'_ecuacion}
 \end{equation}
-\subsubsection{Obtención de $\dot{x_3}$}
-Reemplazamos las ecuaciones \eqref{eq:torque_en_terminos_estados} y \eqref{eq:w_inercial_ecuacion} en la ecuación \eqref{eq:sumatoria_torque_motor}, esta ultima se reemplaza en la ecuación \eqref{eq:x2'_ecuacion} y por último se despeja $\dot{x_3}$ dando como resultado la ecuación \eqref{eq:x'3_ecuacion}
+\subsubsection{Obtención de $\dot{x}_3$}
+Se reemplaza las ecuaciones \eqref{eq:torque_motor_variable_estado} y \eqref{eq:w_inercial_ecuacion} en la ecuación \eqref{eq:sumatoria_torque_motor}, esta ultima se reemplaza en la ecuación \eqref{eq:x2'_ecuacion} y por último se despeja $\dot{x}_3$ dando como resultado la ecuación \eqref{eq:x'3_ecuacion}
 
 \begin{equation*}
-    (-b_m-\frac{k_e k_i}{\text{R}_a}) x_3 +\frac{k_i}{\text{R}_a}u(t)= I_{R} \cdot (\dot{x_2}+\dot{x_3})
+    k_ix_4-b_m x_3 = I_{R} \cdot (\dot{x}_2+\dot{x}_3)
 \end{equation*}
 
 \begin{equation*}
-    \dot{x_3}=-\dot{x_2}-(b_m+\frac{k_e k_i}{\text{R}_a}) \cdot\frac{1}{I_R} x_3 +\frac{k_i}{\text{R}_a I_R}u(t)
+    \dot{x}_3=-\dot{x}_2-\frac{b_m}{I_R} x_3 +\frac{k_i}{I_R}x_4
 \end{equation*}
 \begin{equation*}
-\begin{split}
-    \dot{x}_3 &= -\left(\frac{k}{I_t}x_1 - \frac{b_b}{I_t}x_2 + \frac{b_m R_a + k_e k_i}{I_t R_a} x_3 - \frac{k_i}{R_a I_t}u(t)\right) \\
-    &\quad - \left(b_m + \frac{k_e k_i}{R_a}\right) \frac{1}{I_R} x_3 + \frac{k_i}{R_a I_R}u(t)
-\end{split}
+    \dot{x}_3 = -\left(\frac{k}{I_t}x_1-\frac{b_b}{I_t}x_2+\frac{b_m }{I_t} x_3-\frac{k_i}{I_t}x_4\right)  - \frac{b_m}{I_R} x_3 +\frac{k_i}{I_R}x_4
 \end{equation*}
 
 \begin{equation}
-\begin{split}
-    \dot{x}_3 &= -\frac{k}{I_t}x_1 + \frac{b_b}{I_t}x_2 \\
-    &\quad - \frac{(b_m R_a + k_e k_i)(I_t + I_R)}{R_a I_t I_R}x_3 + \frac{k_i (I_t + I_R)}{R_a I_t I_R}u(t)
-\end{split}
+    \dot{x}_3 = -\frac{k}{I_t}x_1 + \frac{b_b}{I_t}x_2 - b_m\frac{I_R+I_t}{I_RI_t}x_3 + \frac{k_i}{I_R}x_4
 \label{eq:x'3_ecuacion}
 \end{equation}
-Teniendo en cuenta cada una  de las variables de estados, se arma la matriz de estado de acuerdo a la ecuación \eqref{eq:matriz_estado}
+\subsubsection{Obtención de $\dot{x}_4$}
+Se reescribe la ecuacion \eqref{eq:modelo_electrico_motor} en variables de estado y se despeja $\dot{x}_4$
+
+\begin{equation*}
+    u(t)=\text{L}_a\dot{x_4}+\text{R}x_4+k_ex_3
+\end{equation*}
+
+
+\begin{equation}
+    \dot{x_4}= \frac{k_e}{\text{L}_a}x_3+\frac{\text{R}_a}{\text{L}_a}x_4-\frac{1}{\text{L}_a}u(t)
+\label{eq:x'4_ecuacion}
+\end{equation}
+\\
+Teniendo en cuenta cada una  de las variables de estados, se arma la matriz de estado, de acuerdo a la ecuación \eqref{eq:matriz_estado}
 \begin{equation}
     \begin{matrix}
        \dot{\underline{x}}(t)= A \underline{x}(t) + B u(t) \\
@@ -420,25 +416,28 @@ Donde las matrices A, B, C y D corresponden a las ecuaciones \eqref{eq:matriz_A}
 
 \begin{equation}
     A=\begin{bmatrix}
-        0 & 1 & 0 \\
-        \frac{k}{I_t} & -\frac{b_b}{I_t} & \frac{b_mR_a+k_ek_i}{I_tR_a} \\
-        -\frac{k}{I_t} & \frac{b_b}{I_t} & \frac{(b_m R_a + k_e k_i)(I_t + I_R)}{R_a I_t I_R}
+        0 & 1 & 0 & 0\\
+        \frac{k}{I_t} & -\frac{b_b}{I_t} & \frac{b_m }{I_t}& -\frac{k_i}{I_t}\\
+        -\frac{k}{I_t} & \frac{b_b}{I_t} & - b_m\frac{I_R+I_t}{I_RI_t} & \frac{k_i}{I_R}\\
+        0 & 0 & \frac{k_e}{\text{L}_a} & \frac{\text{R}_a}{\text{L}_a}
     \end{bmatrix}
     \label{eq:matriz_A}
 \end{equation}
 \begin{equation}
     B=\begin{bmatrix}
         0 \\
-        -\frac{k_i}{\text{R}_a I_t} \\
-        \frac{k_i (I_t + I_R)}{R_a I_t I_R}   
+        0 \\
+        0 \\
+        -\frac{1}{\text{L}_a}
     \end{bmatrix}
     \label{eq:matriz_B}   
 \end{equation}
 \begin{equation}
     C=\begin{bmatrix}
-        1 & 0 & 0\\
-        0 & 1 & 0 \\
-        0 & 0 & 1
+        1 & 0 & 0&0\\
+        0 & 1 & 0&0 \\
+        0 & 0 & 1 &0\\
+        0 & 0 & 0 & 1
     \end{bmatrix}
     \label{eq:matriz_C}   
 \end{equation}
@@ -446,6 +445,8 @@ Donde las matrices A, B, C y D corresponden a las ecuaciones \eqref{eq:matriz_A}
    D = 0
     \label{eq:matriz_D}   
 \end{equation}
+
+
 \section{Prepare Your Paper Before Styling}
 Before you begin to format your paper, first write and save the content as a 
 separate text file. Complete all content and organizational editing before 
